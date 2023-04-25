@@ -25,15 +25,26 @@ public class Cart : MonoBehaviour
     public float maxSpeed;
     public float minSpeed;
 
-    // Start is called before the first frame update
-    void Start()
-    {
-        
-    }
+    // removed start & update functions, can be added back if we need them
 
-    // Update is called once per frame
-    void Update()
-    {
-        
-    }
+    //for later
+    /*
+from: https://gamedevbeginner.com/input-in-unity-made-easy-complete-guide-to-the-new-system/
+    for cart selection
+        playerInput.SwitchCurrentActionMap("Menu");
+    and the debug to check that it worked
+        Debug.Log(playerInput.currentActionMap);
+
+    camera setting is used for split-screen multiplayer (I forgot we'll need two cameras)
+
+    Input.mousePosition is now Mouse.current.position.ReadValue()
+        using UnityEngine.InputSystem
+
+    now use input actions names to create functions - tack "On" to the start of the name of an action
+    current:
+        void OnTurnRight(){}
+        void OnTurnLeft(){}
+        void OnAccelerate(){}
+
+     */
 }

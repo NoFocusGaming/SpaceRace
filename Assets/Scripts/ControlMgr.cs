@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.InputSystem;
 
 public class ControlMgr : MonoBehaviour
 {
@@ -11,22 +12,22 @@ public class ControlMgr : MonoBehaviour
     }
 
     public Cart playerOne;
+    float deltaHeading;
+    public float deltaSpeed;
 
     // Start is called before the first frame update
     void Start()
     {
-        
+        deltaHeading = playerOne.turnRate;
     }
-
-    public float deltaSpeed;
-    public float deltaHeading;
 
     // Update is called once per frame
     void Update()
     {
-        if(Input.GetKeyDown(KeyCode.Escape))
+        if(Keyboard.current.escapeKey.wasPressedThisFrame)
             Application.Quit();
 
+        /*
         if(Input.GetKey(KeyCode.UpArrow))
             playerOne.desiredSpeed += deltaSpeed;
         else
@@ -37,5 +38,19 @@ public class ControlMgr : MonoBehaviour
             playerOne.heading -= deltaHeading;
         if(Input.GetKey(KeyCode.RightArrow))
             playerOne.heading += deltaHeading;
+        */
+    }
+
+    void OnTurnRight()
+    {
+        playerOne.heading += deltaHeading;
+    }
+    void OnTurnLeft()
+    {
+        playerOne.heading -= deltaHeading;
+    }
+    void OnAccelerate()
+    {
+        playerOne.desiredSpeed += deltaSpeed;
     }
 }
