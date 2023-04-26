@@ -11,14 +11,14 @@ public class ControlMgr : MonoBehaviour
         inst = this;
     }
 
-    public Cart playerOne;
+    //public Cart playerOne;
     float deltaHeading;
     public float deltaSpeed;
 
     // Start is called before the first frame update
     void Start()
     {
-        deltaHeading = playerOne.turnRate;
+        //deltaHeading = playerOne.turnRate;
     }
 
     // Update is called once per frame
@@ -41,7 +41,7 @@ public class ControlMgr : MonoBehaviour
         */
     }
 
-    void OnTurnRight()
+    /*void OnTurnRight()
     {
         playerOne.heading += deltaHeading;
     }
@@ -52,5 +52,5 @@ public class ControlMgr : MonoBehaviour
     void OnAccelerate()
     {
         playerOne.desiredSpeed += deltaSpeed;
-    }
+    }*/
 }

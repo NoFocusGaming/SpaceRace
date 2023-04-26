@@ -25,6 +25,20 @@ public class Cart : MonoBehaviour
     public float maxSpeed;
     public float minSpeed;
 
+    void OnTurnRight()
+    {
+        desiredHeading += turnRate;
+    }
+    void OnTurnLeft()
+    {
+        desiredHeading -= turnRate;
+    }
+    void OnAccelerate()
+    {
+        desiredSpeed += acceleration;
+        transform.position = transform.position + new Vector3 (1f,0,0);
+    }
+
     // removed start & update functions, can be added back if we need them
 
     //for later
