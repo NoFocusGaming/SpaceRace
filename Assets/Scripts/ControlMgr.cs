@@ -12,8 +12,10 @@ public class ControlMgr : MonoBehaviour
     }
 
     public Cart playerOne;
+    public List<Rocket> rockets;
     float deltaHeading;
     public float deltaSpeed;
+    public bool gameStart;
 
     // Start is called before the first frame update
     void Start()
@@ -24,15 +26,27 @@ public class ControlMgr : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        if(playerOne.currLap >= UIMgr.inst.maxLap){
+            //win conditions loop
+            Debug.Log("Race Finished");
+        }
+
+        if(playerOne.speed > 0){
+            foreach (Rocket rocket in rockets)
+                rocket.checkCollision();
+        }
+
         if (Input.GetKeyDown(KeyCode.Escape))
             Application.Quit();
 
 
-        if (Input.GetKey(KeyCode.UpArrow))
+        if (Input.GetKey(KeyCode.UpArrow)){
             playerOne.desiredSpeed += deltaSpeed;
-        else
+            gameStart = true;
+        }else{
             playerOne.desiredSpeed -= deltaSpeed;
-       playerOne.desiredSpeed = Utils.Clamp(playerOne.desiredSpeed, playerOne.minSpeed, playerOne.maxSpeed);
+        }
+        playerOne.desiredSpeed = Utils.Clamp(playerOne.desiredSpeed, playerOne.minSpeed, playerOne.maxSpeed);
 
         if (Input.GetKey(KeyCode.LeftArrow))
             playerOne.heading -= deltaHeading;

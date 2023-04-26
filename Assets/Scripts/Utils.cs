@@ -37,4 +37,9 @@ public static class Utils
             angleDegrees += 360;
         return angleDegrees;
     }
+
+    public static bool collisionDetected(Vector3 pos1, Vector3 pos2, float r1, float r2)
+    {
+        return Vector3.Distance(pos1, pos2) <= (r1 + r2);
+    }
 }

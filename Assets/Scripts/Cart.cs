@@ -25,40 +25,19 @@ public class Cart : MonoBehaviour
     public float maxSpeed;
     public float minSpeed;
 
-    void OnTurnRight()
+    public float radius;
+
+    public int effectTimer;
+    public float boost;
+    public float initMaxSpeed;
+    public bool offRoad;
+
+    public int currLap;
+    public bool onFinishLine;
+
+    void Start()
     {
-        desiredHeading += turnRate;
+        initMaxSpeed = maxSpeed;
+        currLap = 0;
     }
-    void OnTurnLeft()
-    {
-        desiredHeading -= turnRate;
-    }
-    void OnAccelerate()
-    {
-        desiredSpeed += acceleration;
-        transform.position = transform.position + new Vector3 (1f,0,0);
-    }
-
-    // removed start & update functions, can be added back if we need them
-
-    //for later
-    /*
-from: https://gamedevbeginner.com/input-in-unity-made-easy-complete-guide-to-the-new-system/
-    for cart selection
-        playerInput.SwitchCurrentActionMap("Menu");
-    and the debug to check that it worked
-        Debug.Log(playerInput.currentActionMap);
-
-    camera setting is used for split-screen multiplayer (I forgot we'll need two cameras)
-
-    Input.mousePosition is now Mouse.current.position.ReadValue()
-        using UnityEngine.InputSystem
-
-    now use input actions names to create functions - tack "On" to the start of the name of an action
-    current:
-        void OnTurnRight(){}
-        void OnTurnLeft(){}
-        void OnAccelerate(){}
-
-     */
 }

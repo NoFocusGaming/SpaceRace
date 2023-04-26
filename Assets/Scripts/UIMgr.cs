@@ -6,11 +6,18 @@ using TMPro;
 
 public class UIMgr : MonoBehaviour
 {
+    public static UIMgr inst;
+    private void Awake()
+    {
+        inst = this;
+    }
+
     // text setting for placement
     public TextMeshProUGUI placeText;
     public TextMeshProUGUI lapText;
 
-    public int lap;
+    public GameObject offRoadWarning;
+
     public int maxLap;
     public int place;
 
@@ -24,7 +31,6 @@ public class UIMgr : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        lap = 0;
         place = 1;
 
         spriteIndex = 0;
@@ -48,7 +54,7 @@ public class UIMgr : MonoBehaviour
                 placeText.SetText(place + "th!");
                 break;
         }
-        lapText.SetText(lap + "/" + maxLap);
+        lapText.SetText(ControlMgr.inst.playerOne.currLap + "/" + maxLap);
 
         currItem.sprite = items[spriteIndex];
     }

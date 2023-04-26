@@ -5,13 +5,19 @@ using UnityEngine;
 public class CartPhysics : MonoBehaviour
 {
     public Cart cart;
+    private Rigidbody rbFR,rbFL,rbBR,rbBL;
+    public GameObject wheelFR,wheelFL,wheelBR,wheelBL;
 
     public Vector3 eulerRotation = Vector3.zero;
 
     // Start is called before the first frame update
     void Start()
     {
-        cart.position = transform.localPosition;   
+        rbFR = wheelFR.GetComponent<Rigidbody>();
+        rbFL = wheelFL.GetComponent<Rigidbody>();
+        rbBR = wheelBR.GetComponent<Rigidbody>();
+        rbBL = wheelBL.GetComponent<Rigidbody>();
+        cart.position = transform.localPosition;  
     }
 
     // Update is called once per frame
@@ -23,20 +29,71 @@ public class CartPhysics : MonoBehaviour
         if(Utils.ApproximatelyEqual(cart.speed, cart.desiredSpeed)){
             ;
         }else if(cart.speed < cart.desiredSpeed){
-            cart.speed = cart.speed + cart.acceleration * Time.deltaTime;
+            cart.speed = cart.speed + cart.acceleration * cart.boost * Time.deltaTime;
         }else if(cart.speed > cart.desiredSpeed){
             cart.speed = cart.speed - cart.deacceleration * Time.deltaTime;
         }
         cart.speed = Utils.Clamp(cart.speed, cart.minSpeed, cart.maxSpeed);
+
+        cart.heading = Utils.Degrees360(cart.heading);
 
         cart.velocity.x = Mathf.Cos(cart.heading * Mathf.Deg2Rad) * cart.speed;
         cart.velocity.y = 0;
         cart.velocity.z = Mathf.Sin(-cart.heading * Mathf.Deg2Rad) * cart.speed;
 
         cart.position = cart.position + cart.velocity * Time.deltaTime;
-        transform.localPosition = cart.position;
+        cart.transform.localPosition = cart.position;
 
         eulerRotation.y = cart.heading;
-        transform.localEulerAngles = eulerRotation;
+        cart.transform.localEulerAngles = eulerRotation;
+
+        //----------------------
+        // effects
+        //----------------------
+        if(cart.effectTimer > 0){
+            cart.effectTimer -= 1;
+            Debug.Log("Boosted");
+        }else{
+            cart.boost = 1;
+            cart.maxSpeed = cart.initMaxSpeed;
+        }
+    }
+
+    void FixedUpdate()
+    {
+        RaycastHit hit;
+
+        if(Physics.Raycast (cart.position, Vector3.down, out hit, Mathf.Infinity)){
+            if(hit.collider.gameObject.CompareTag("FinishLine")){
+                if(!cart.onFinishLine)
+                    cart.currLap += 1;
+                cart.onFinishLine = true;
+            }else{
+                cart.onFinishLine = false;
+            } 
+            
+            if(hit.collider.gameObject.CompareTag("RoadCenter")){
+                if(!cart.offRoad){
+                    AudioMgr.inst.offRoadWarning.Play();
+                    UIMgr.inst.offRoadWarning.SetActive(true);
+                }
+                cart.maxSpeed = 5;
+                cart.offRoad = true;
+            }else if(hit.collider.gameObject.CompareTag("Road")){
+                if(cart.offRoad){
+                    cart.maxSpeed = cart.initMaxSpeed;
+                    AudioMgr.inst.offRoadWarning.Stop();
+                    UIMgr.inst.offRoadWarning.SetActive(false);
+                }
+                cart.offRoad = false;
+            }
+        }else{
+            if(!cart.offRoad){
+                AudioMgr.inst.offRoadWarning.Play();
+                UIMgr.inst.offRoadWarning.SetActive(true);
+            }
+            cart.maxSpeed = 5;
+            cart.offRoad = true;
+        }
     }
 }
