@@ -12,16 +12,6 @@ public class AudioMgr : MonoBehaviour
 
     public AudioSource offRoadWarning;
     public AudioSource rocketBoost;
+    public AudioSource backgroundMusic;
 
-    // Start is called before the first frame update
-    void Start()
-    {
-        
-    }
-
-    // Update is called once per frame
-    void Update()
-    {
-        
-    }
 }

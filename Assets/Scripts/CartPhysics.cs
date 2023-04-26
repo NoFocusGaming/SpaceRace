@@ -8,6 +8,8 @@ public class CartPhysics : MonoBehaviour
     private Rigidbody rbFR,rbFL,rbBR,rbBL;
     public GameObject wheelFR,wheelFL,wheelBR,wheelBL;
 
+    public bool player;
+
     public Vector3 eulerRotation = Vector3.zero;
 
     // Start is called before the first frame update
@@ -73,14 +75,14 @@ public class CartPhysics : MonoBehaviour
             } 
             
             if(hit.collider.gameObject.CompareTag("RoadCenter")){
-                if(!cart.offRoad){
+                if(!cart.offRoad && player){
                     AudioMgr.inst.offRoadWarning.Play();
                     UIMgr.inst.offRoadWarning.SetActive(true);
                 }
                 cart.maxSpeed = 5;
                 cart.offRoad = true;
             }else if(hit.collider.gameObject.CompareTag("Road")){
-                if(cart.offRoad){
+                if(cart.offRoad && player){
                     cart.maxSpeed = cart.initMaxSpeed;
                     AudioMgr.inst.offRoadWarning.Stop();
                     UIMgr.inst.offRoadWarning.SetActive(false);
@@ -88,7 +90,7 @@ public class CartPhysics : MonoBehaviour
                 cart.offRoad = false;
             }
         }else{
-            if(!cart.offRoad){
+            if(!cart.offRoad && player){
                 AudioMgr.inst.offRoadWarning.Play();
                 UIMgr.inst.offRoadWarning.SetActive(true);
             }

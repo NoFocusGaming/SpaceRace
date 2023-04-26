@@ -8,6 +8,21 @@ EditorBuildSettings:
   - enabled: 0
     path: 
     guid: 00000000000000000000000000000000
+  - enabled: 1
+    path: Assets/Scenes/TitleScreen.unity
+    guid: a072f6cf845f06644b6540fe1fe5d9e7
+  - enabled: 1
+    path: Assets/Scenes/Menu.unity
+    guid: d70328b73bc3a3940b305875a73fdc62
+  - enabled: 1
+    path: Assets/Scenes/WinScreen.unity
+    guid: 6dd499f26edd8a646a0817214e1ecf9f
+  - enabled: 1
+    path: Assets/Scenes/LoseScreen.unity
+    guid: ab2a1fd38ab754541ab40999c8ff69b5
+  - enabled: 1
+    path: Assets/Scenes/Moon.unity
+    guid: a7383b477ede65b4c86453da631ae7a1
   m_configObjects:
     com.unity.input.settings: {fileID: 11400000, guid: e0d9c8a5763383d4fab19136e2dcb759,
       type: 2}

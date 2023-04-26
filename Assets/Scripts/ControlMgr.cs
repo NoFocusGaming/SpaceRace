@@ -1,7 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.InputSystem;
+using UnityEngine.SceneManagement;
 
 public class ControlMgr : MonoBehaviour
 {
@@ -17,6 +17,8 @@ public class ControlMgr : MonoBehaviour
     public float deltaSpeed;
     public bool gameStart;
 
+    public int winScene;
+
     // Start is called before the first frame update
     void Start()
     {
@@ -29,6 +31,8 @@ public class ControlMgr : MonoBehaviour
         if(playerOne.currLap >= UIMgr.inst.maxLap){
             //win conditions loop
             Debug.Log("Race Finished");
+
+            SceneManager.LoadScene(winScene, LoadSceneMode.Single);
         }
 
         if(playerOne.speed > 0){
