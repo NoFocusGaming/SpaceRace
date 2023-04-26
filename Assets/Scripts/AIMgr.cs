@@ -14,7 +14,7 @@ public class AIMgr : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        
+        maxPathVectorDist = 2.8f;
     }
 
     // Update is called once per frame
@@ -38,7 +38,7 @@ public class AIMgr : MonoBehaviour
     public void MoveOnPath()
     {
         Vector3 diff =  path[currPathItem].transform.position - AIPlayer.transform.position;
-        AIPlayer.desiredHeading = Mathf.Atan2(diff.x, diff.z) * Mathf.Rad2Deg;
+        AIPlayer.desiredHeading = Mathf.Atan2(-diff.z, diff.x) * Mathf.Rad2Deg;
 
         if(diff.magnitude < maxPathVectorDist){
             currPathItem += 1;
