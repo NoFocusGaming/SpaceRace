@@ -5,9 +5,15 @@ using UnityEngine.SceneManagement;
 
 public class SceneMgr : MonoBehaviour
 {
+    public static SceneMgr inst;
+    private void Awake()
+    {
+        inst = this;
+    }
+
     public CanvasGroup blackScreen;
     public int nextSceneIndex;
-    bool starting, ending, done;
+    public bool starting, ending, done;
     public bool loadOut;
 
     void Start()
