@@ -17,6 +17,7 @@ public class UIMgr : MonoBehaviour
     public TextMeshProUGUI lapText;
 
     public GameObject offRoadWarning;
+    public GameObject instructions;
 
     public int maxLap;
     public int place;
@@ -39,6 +40,10 @@ public class UIMgr : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        if(ControlMgr.inst.gameStart){
+            instructions.SetActive(false);
+        }
+
         switch (place)
         {
             case 1:

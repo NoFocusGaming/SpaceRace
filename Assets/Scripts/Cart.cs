@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 
 public class Cart : MonoBehaviour
@@ -33,11 +34,18 @@ public class Cart : MonoBehaviour
     public bool offRoad;
 
     public int currLap;
-    public bool onFinishLine;
+    public bool onFinishLine, onCP;
 
+    public bool AI;
+
+    public List<float> checkpointTimes;
+    public int currCheckpoint, prevCheckpoint, numCheckpoints;
     void Start()
     {
         initMaxSpeed = maxSpeed;
         currLap = 0;
+        numCheckpoints = 42;
+
+        checkpointTimes = Enumerable.Repeat(2000f, numCheckpoints).ToList();
     }
 }

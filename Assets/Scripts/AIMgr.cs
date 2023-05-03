@@ -10,40 +10,45 @@ public class AIMgr : MonoBehaviour
     public int currPathItem;
 
     public float maxPathVectorDist;
+    public Vector3 pathPoint, diff;
 
     // Start is called before the first frame update
     void Start()
     {
-        maxPathVectorDist = 2.8f;
     }
 
     // Update is called once per frame
     void Update()
     {
         if(ControlMgr.inst.gameStart){
-            AIPlayer.desiredSpeed = AIPlayer.maxSpeed;
-
-            MoveOnPath();
-
-            if(Utils.ApproximatelyEqual(AIPlayer.heading, AIPlayer.desiredHeading)){
-                ;
-            }else if(Utils.AngleDiffPosNeg(AIPlayer.desiredHeading, AIPlayer.heading) > 0){
-                AIPlayer.heading += AIPlayer.turnRate * Time.deltaTime;
-            }else if(Utils.AngleDiffPosNeg(AIPlayer.desiredHeading, AIPlayer.heading) < 0){
-                AIPlayer.heading -= AIPlayer.turnRate * Time.deltaTime;
-            }
+            MoveAlongPath();
         }
     }
 
-    public void MoveOnPath()
+    public void MoveToPoint(Vector3 point)
     {
-        Vector3 diff =  path[currPathItem].transform.position - AIPlayer.transform.position;
+        diff = point - AIPlayer.transform.position;
         AIPlayer.desiredHeading = Mathf.Atan2(-diff.z, diff.x) * Mathf.Rad2Deg;
+        AIPlayer.desiredSpeed = AIPlayer.maxSpeed;
+    }
+
+    public void MoveAlongPath()
+    {
+        pathPoint = path[currPathItem].transform.position;
+        MoveToPoint(pathPoint);
 
         if(diff.magnitude < maxPathVectorDist){
             currPathItem += 1;
             if(currPathItem == path.Count)
                 currPathItem = 0;
+
+            if(currPathItem == 2 || currPathItem == 3 || currPathItem == 4 ){
+                AIPlayer.maxSpeed = AIPlayer.initMaxSpeed - 4;
+            }else if(currPathItem == 10 || currPathItem == 11 || currPathItem == 12 ){
+                AIPlayer.maxSpeed = AIPlayer.initMaxSpeed - 4;
+            }else{
+                AIPlayer.maxSpeed = AIPlayer.initMaxSpeed;
+            }
         }
     }
 }

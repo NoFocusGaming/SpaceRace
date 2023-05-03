@@ -37,6 +37,16 @@ public class CartPhysics : MonoBehaviour
         }
         cart.speed = Utils.Clamp(cart.speed, cart.minSpeed, cart.maxSpeed);
 
+        if(cart.AI){
+            if(Utils.ApproximatelyEqual(cart.heading, cart.desiredHeading)){
+                ;
+            }else if(Utils.AngleDiffPosNeg(cart.desiredHeading, cart.heading) > 0){
+                cart.heading += cart.turnRate * Time.deltaTime;
+            }else if(Utils.AngleDiffPosNeg(cart.desiredHeading, cart.heading) < 0){
+                cart.heading -= cart.turnRate * Time.deltaTime;
+            }
+        }
+        
         cart.heading = Utils.Degrees360(cart.heading);
 
         cart.velocity.x = Mathf.Cos(cart.heading * Mathf.Deg2Rad) * cart.speed;
@@ -67,11 +77,34 @@ public class CartPhysics : MonoBehaviour
 
         if(Physics.Raycast (cart.position, Vector3.down, out hit, Mathf.Infinity)){
             if(hit.collider.gameObject.CompareTag("FinishLine")){
-                if(!cart.onFinishLine)
+                if(!cart.onFinishLine && (cart.prevCheckpoint > 1)){
                     cart.currLap += 1;
+
+                    cart.checkpointTimes[cart.currCheckpoint - 1] = Time.time;
+
+                    cart.prevCheckpoint = cart.currCheckpoint;
+                    cart.currCheckpoint += 1;
+                    if(cart.currCheckpoint > cart.numCheckpoints)
+                        cart.currCheckpoint = 1;
+
+                    if(!cart.AI){
+                        ControlMgr.inst.resetItems();
+                }
+                }
                 cart.onFinishLine = true;
+            }else if(hit.collider.gameObject.CompareTag("CP")){
+                if(!cart.onCP){
+                    cart.checkpointTimes[cart.currCheckpoint - 1] = Time.time;
+
+                    cart.prevCheckpoint = cart.currCheckpoint;
+                    cart.currCheckpoint += 1;
+                    if(cart.currCheckpoint > cart.numCheckpoints)
+                        cart.currCheckpoint = 1;
+                }
+                cart.onCP = true;
             }else{
                 cart.onFinishLine = false;
+                cart.onCP = false;
             } 
             
             if(hit.collider.gameObject.CompareTag("RoadCenter")){
