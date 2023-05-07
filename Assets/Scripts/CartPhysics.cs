@@ -77,7 +77,7 @@ public class CartPhysics : MonoBehaviour
 
         if(Physics.Raycast (cart.position, Vector3.down, out hit, Mathf.Infinity)){
             if(hit.collider.gameObject.CompareTag("FinishLine")){
-                if(!cart.onFinishLine && (cart.prevCheckpoint > 1)){
+                if(!cart.onFinishLine){
                     cart.currLap += 1;
 
                     cart.checkpointTimes[cart.currCheckpoint - 1] = Time.time;
@@ -102,6 +102,7 @@ public class CartPhysics : MonoBehaviour
                         cart.currCheckpoint = 1;
                 }
                 cart.onCP = true;
+                cart.onFinishLine = false;
             }else{
                 cart.onFinishLine = false;
                 cart.onCP = false;

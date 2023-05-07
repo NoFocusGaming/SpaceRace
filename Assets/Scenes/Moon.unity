@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 0}
-  m_IndirectSpecularColor: {r: 0.0014785795, g: 0.0013591028, b: 0.0012890887, a: 1}
+  m_IndirectSpecularColor: {r: 0.0014821443, g: 0.001356025, b: 0.0012915672, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -8172,7 +8172,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: 0/3
+  m_text: 1/3
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 66b4efc9ee27e8a419ba40e1a20d93b8, type: 2}
   m_sharedMaterial: {fileID: 3391342029661755061, guid: 66b4efc9ee27e8a419ba40e1a20d93b8,
@@ -9055,7 +9055,7 @@ CapsuleCollider:
   m_IsTrigger: 0
   m_Enabled: 1
   m_Radius: 0.45
-  m_Height: 1.9
+  m_Height: 1.8
   m_Direction: 1
   m_Center: {x: 0, y: 0, z: 0}
 --- !u!23 &1822220556
@@ -10206,7 +10206,12 @@ PrefabInstance:
     - target: {fileID: 2782784265520350255, guid: 697ad6d1258384e4aaae120a2e7679b9,
         type: 3}
       propertyPath: turnRate
-      value: 0.5
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 2782784265520350255, guid: 697ad6d1258384e4aaae120a2e7679b9,
+        type: 3}
+      propertyPath: acceleration
+      value: 1.5
       objectReference: {fileID: 0}
     - target: {fileID: 2782784265520350255, guid: 697ad6d1258384e4aaae120a2e7679b9,
         type: 3}

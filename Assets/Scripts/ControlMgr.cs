@@ -30,11 +30,14 @@ public class ControlMgr : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if(playerOne.currLap >= UIMgr.inst.maxLap){
+        if(playerOne.currLap > UIMgr.inst.maxLap){
             //win conditions loop
             Debug.Log("Race Finished");
 
-            SceneManager.LoadScene(winScene, LoadSceneMode.Single);
+            if(UIMgr.inst.place == 1)
+                SceneManager.LoadScene(winScene, LoadSceneMode.Single);
+            else
+                SceneManager.LoadScene("LoseScreen", LoadSceneMode.Single);
         }
 
         if(!playerOne.onCP){
@@ -45,7 +48,7 @@ public class ControlMgr : MonoBehaviour
                 }else if(cart.currCheckpoint > playerOne.currCheckpoint){
                     currPlace += 1;
                 }else if(cart.currCheckpoint == playerOne.currCheckpoint){
-                    if(cart.checkpointTimes[cart.prevCheckpoint] < (playerOne.checkpointTimes[playerOne.prevCheckpoint] + 0.1))
+                    if(cart.checkpointTimes[cart.prevCheckpoint - 1] < (playerOne.checkpointTimes[playerOne.prevCheckpoint - 1] + 0.1))
                         currPlace += 1;
                 }
 
