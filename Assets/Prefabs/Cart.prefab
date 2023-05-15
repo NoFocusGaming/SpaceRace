@@ -231,7 +231,7 @@ Transform:
   m_Children:
   - {fileID: 2782784266805875406}
   m_Father: {fileID: 0}
-  m_RootOrder: 0
+  m_RootOrder: -1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!33 &2782784265520350245
 MeshFilter:
@@ -333,6 +333,7 @@ MonoBehaviour:
   desiredSpeed: 0
   heading: 0
   desiredHeading: 0
+  cart: {fileID: 2782784265520350297}
   acceleration: 2
   deacceleration: 4
   turnRate: 2

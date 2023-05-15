@@ -44,7 +44,6 @@ public class SceneMgr : MonoBehaviour
         {
             SceneManager.LoadScene(nextSceneIndex, LoadSceneMode.Single);
         }
-
     }
 
     IEnumerator fadeOut()

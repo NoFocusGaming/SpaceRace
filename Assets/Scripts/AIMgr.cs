@@ -4,10 +4,14 @@ using UnityEngine;
 
 public class AIMgr : MonoBehaviour
 {
+    private List<GameObject> currPath;
     public List<GameObject> path;
-    public Cart AIPlayer;
+    public List<GameObject> path1;
+    public List<GameObject> path2;
+    public List<Cart> AIPlayers;
 
-    public int currPathItem;
+    public List<int> currPathItem;
+    public int currPathIndex;
 
     public float maxPathVectorDist;
     public Vector3 pathPoint, diff;
@@ -25,30 +29,41 @@ public class AIMgr : MonoBehaviour
         }
     }
 
-    public void MoveToPoint(Vector3 point)
-    {
-        diff = point - AIPlayer.transform.position;
-        AIPlayer.desiredHeading = Mathf.Atan2(-diff.z, diff.x) * Mathf.Rad2Deg;
-        AIPlayer.desiredSpeed = AIPlayer.maxSpeed;
-    }
-
     public void MoveAlongPath()
     {
-        pathPoint = path[currPathItem].transform.position;
-        MoveToPoint(pathPoint);
+        int index = 0;
+        foreach(Cart cart in AIPlayers){
+            currPathIndex = index;
+            setCurrPath();
+            pathPoint = currPath[currPathItem[index]].transform.position;
+            cart.MoveToPoint(pathPoint);
+            diff = pathPoint - cart.transform.position;
 
-        if(diff.magnitude < maxPathVectorDist){
-            currPathItem += 1;
-            if(currPathItem == path.Count)
-                currPathItem = 0;
+            if(diff.magnitude < maxPathVectorDist){
+                currPathItem[index] += 1;
+                if(currPathItem[index] == path.Count)
+                    currPathItem[index] = 0;
 
-            if(currPathItem == 2 || currPathItem == 3 || currPathItem == 4 ){
-                AIPlayer.maxSpeed = AIPlayer.initMaxSpeed - 4;
-            }else if(currPathItem == 10 || currPathItem == 11 || currPathItem == 12 ){
-                AIPlayer.maxSpeed = AIPlayer.initMaxSpeed - 4;
-            }else{
-                AIPlayer.maxSpeed = AIPlayer.initMaxSpeed;
+                if(currPathItem[index] == 2 || currPathItem[index] == 3 || currPathItem[index] == 4 ){
+                    cart.maxSpeed = cart.initMaxSpeed - 4;
+                }else if(currPathItem[index] == 10 || currPathItem[index] == 11 || currPathItem[index] == 12 ){
+                    cart.maxSpeed = cart.initMaxSpeed - 4;
+                }else{
+                    cart.maxSpeed = cart.initMaxSpeed;
+                }
             }
+            
+            index++;
+        }
+    }
+
+    public void setCurrPath(){
+        if(currPathIndex == 0){
+            currPath = path;
+        }else if(currPathIndex == 1){
+            currPath = path1;
+        }else if(currPathIndex == 2){
+            currPath = path2;
         }
     }
 }

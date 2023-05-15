@@ -60,14 +60,54 @@ public class CartPhysics : MonoBehaviour
         cart.transform.localEulerAngles = eulerRotation;
 
         //----------------------
+        // collision detection
+        //----------------------
+        if(!cart.AI && cart.speed > 0){
+            foreach(Cart AIcart in ControlMgr.inst.cartsInPlay){
+                if(Utils.cartCollisionDetected(AIcart, cart)){
+                    cartCollision(AIcart);
+                }
+            }
+        }else if(cart.speed > 0){
+            foreach(Cart AIcart in ControlMgr.inst.cartsInPlay){
+                if(AIcart != cart){
+                    if(Utils.cartCollisionDetected(AIcart, cart)){
+                        cartCollision(AIcart);
+                }
+                }
+            }
+        }
+
+        //----------------------
         // effects
         //----------------------
-        if(cart.effectTimer > 0){
-            cart.effectTimer -= 1;
-            Debug.Log("Boosted");
-        }else{
+        if(cart.speed > 0){
+            foreach (Rocket rocket in ControlMgr.inst.rockets){
+                if(Utils.rocketCollisionDetected(rocket.transform.localPosition, cart.position, rocket.radius, cart.radius)){
+                    if(!cart.AI)
+                        AudioMgr.inst.rocketBoost.Play();
+
+                    rocket.rocket.SetActive(false);
+                    cart.effectTimer = 80;
+                    cart.boost = rocket.speedMultiplier;
+                    cart.maxSpeed += rocket.maxSpeedBoost;
+                }
+            }
+        }
+
+        if(cart.effectTimer == 0){
             cart.boost = 1;
             cart.maxSpeed = cart.initMaxSpeed;
+        }else if(cart.effectTimer > 0){
+            cart.effectTimer -= 1;
+            //Debug.Log("Boosted");
+        }
+
+        if(cart.collisionTimer > 0){
+            cart.collisionTimer -= 1;
+            Debug.Log("Collision");
+        }else if(cart.collisionTimer == 0){
+            cart.acceleration = cart.initAccel;
         }
     }
 
@@ -76,6 +116,7 @@ public class CartPhysics : MonoBehaviour
         RaycastHit hit;
 
         if(Physics.Raycast (cart.position, Vector3.down, out hit, Mathf.Infinity)){
+            Debug.Log("hit gameObject: " + hit.collider.gameObject);
             if(hit.collider.gameObject.CompareTag("FinishLine")){
                 if(!cart.onFinishLine){
                     cart.currLap += 1;
@@ -98,6 +139,7 @@ public class CartPhysics : MonoBehaviour
 
                     cart.prevCheckpoint = cart.currCheckpoint;
                     cart.currCheckpoint += 1;
+
                     if(cart.currCheckpoint > cart.numCheckpoints)
                         cart.currCheckpoint = 1;
                 }
@@ -130,6 +172,24 @@ public class CartPhysics : MonoBehaviour
             }
             cart.maxSpeed = 5;
             cart.offRoad = true;
+        }
+    }
+
+    public void cartCollision(Cart otherCart)
+    {
+        if(cart.collisionTimer <= 0){
+            cart.desiredHeading = Mathf.Atan2(otherCart.velocity.z, -otherCart.velocity.x);
+            cart.speed -= 2;
+            cart.desiredSpeed = cart.maxSpeed;
+            cart.acceleration += 2;
+
+            otherCart.desiredHeading = Mathf.Atan2(cart.velocity.z, -cart.velocity.x);
+            otherCart.speed = otherCart.speed / 2;
+            otherCart.desiredSpeed = cart.maxSpeed;
+            cart.acceleration += 2;
+
+            cart.collisionTimer = 20;
+            otherCart.collisionTimer = 20;
         }
     }
 }

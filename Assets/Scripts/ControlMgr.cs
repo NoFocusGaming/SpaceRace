@@ -18,7 +18,7 @@ public class ControlMgr : MonoBehaviour
     public float deltaSpeed;
     public bool gameStart;
 
-    public int winScene;
+    public bool gameWon;
 
     // Start is called before the first frame update
     void Start()
@@ -33,40 +33,22 @@ public class ControlMgr : MonoBehaviour
         if(playerOne.currLap > UIMgr.inst.maxLap){
             //win conditions loop
             Debug.Log("Race Finished");
+            updatePlace();
+            gameWon = true;
 
             if(UIMgr.inst.place == 1)
-                SceneManager.LoadScene(winScene, LoadSceneMode.Single);
+                SceneManager.LoadScene("WinScreen", LoadSceneMode.Single);
             else
                 SceneManager.LoadScene("LoseScreen", LoadSceneMode.Single);
         }
 
         if(!playerOne.onCP){
-            currPlace = 1;
-            foreach(Cart cart in cartsInPlay){
-                if(cart.currLap > playerOne.currLap){
-                    currPlace += 1;
-                }else if(cart.currCheckpoint > playerOne.currCheckpoint){
-                    currPlace += 1;
-                }else if(cart.currCheckpoint == playerOne.currCheckpoint){
-                    if(cart.checkpointTimes[cart.prevCheckpoint - 1] < (playerOne.checkpointTimes[playerOne.prevCheckpoint - 1] + 0.1))
-                        currPlace += 1;
-                }
-
-                foreach (Rocket rocket in rockets){
-                    if(Utils.collisionDetected(rocket.transform.localPosition, cart.position, rocket.radius, cart.radius)){
-                        rocket.rocket.SetActive(false);
-                        cart.effectTimer = 80;
-                        cart.boost = rocket.speedMultiplier;
-                        cart.maxSpeed += rocket.maxSpeedBoost;
-                    }
-                }
-            }
-            UIMgr.inst.place = currPlace;
+            updatePlace();
         }
 
         if(playerOne.speed > 0){
             foreach (Rocket rocket in rockets){
-                if(Utils.collisionDetected(rocket.transform.localPosition, playerOne.position, rocket.radius, playerOne.radius)){
+                if(Utils.rocketCollisionDetected(rocket.transform.localPosition, playerOne.position, rocket.radius, playerOne.radius)){
                     AudioMgr.inst.rocketBoost.Play();
                     rocket.rocket.SetActive(false);
                     playerOne.effectTimer = 80;
@@ -92,6 +74,24 @@ public class ControlMgr : MonoBehaviour
             playerOne.heading -= deltaHeading;
         if(Input.GetKey(KeyCode.RightArrow))
             playerOne.heading += deltaHeading;
+    }
+
+    public void updatePlace()
+    {
+        currPlace = 1;
+        foreach(Cart cart in cartsInPlay){
+            if(cart.currLap > playerOne.currLap){
+                currPlace += 1;
+            }else if(cart.currLap == playerOne.currLap){
+                if(cart.currCheckpoint > playerOne.currCheckpoint){
+                    currPlace += 1;
+                }else if(cart.currCheckpoint == playerOne.currCheckpoint){
+                    if(cart.checkpointTimes[cart.prevCheckpoint - 1] < (playerOne.checkpointTimes[playerOne.prevCheckpoint - 1]))
+                        currPlace += 1;
+                }
+            }
+        }
+        UIMgr.inst.place = currPlace;
     }
 
     public void resetItems()
