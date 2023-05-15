@@ -313,6 +313,7 @@ MonoBehaviour:
   wheelFL: {fileID: 2782784264812101103}
   wheelBR: {fileID: 2782784265815049109}
   wheelBL: {fileID: 2782784266295598544}
+  player: 0
   eulerRotation: {x: 0, y: 0, z: 0}
 --- !u!114 &2782784265520350255
 MonoBehaviour:
@@ -344,6 +345,12 @@ MonoBehaviour:
   offRoad: 0
   currLap: 0
   onFinishLine: 0
+  onCP: 0
+  AI: 0
+  checkpointTimes: []
+  currCheckpoint: 0
+  prevCheckpoint: 0
+  numCheckpoints: 0
 --- !u!1 &2782784265815049109
 GameObject:
   m_ObjectHideFlags: 0
